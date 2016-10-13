@@ -37,16 +37,16 @@
 #####2.1. Requirements
 　　MTGIpick has been compiled and tested under Sun Java interpreter and Matlab. MTGIpick can be used in Windows- and Linux- platforms. Java Virtual Machine and MATLAB Compiler Runtime (MCR) are required for MTGIpick setup on your platform. However, we strongly advise the use of openjdk (JDK) instead of the Oracle version of java virtual machine when working in linux-based machines as the Oracle version may result in some exceptions during the analyses.</br>
   _ _ _ _ Software _ _ _ _ _ _ _   On window(x64)_ _ _ _ _ _ On Linux(x86_64)_ _ _ _ _ _ </br>
-  Java Virtual Machine_ _ _ _ _ _ _ _ JDK 1.8_ _ _ _ _ _ _ _ _ _ _ JDK 1.8_ _ _ _ _ _ _ _ _ _ </br>
+  Java Virtual Machine_ _ _ _ _ _ _ _ JDK 1.8_ _ _ _ _ _ _ _ _JDK 1.8_ _ _ _ _ _ _ _ _ _ </br>
   MATLAB Compiler Runtime_ _ _ _  MCR 8.4_ _ _ _ _ _ _ _ _ MCR 8.1_ _ _ _ _ _ _ _ _ _  </br>
-  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </br> 
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </br> 
 #####2.2. Download
 >There are two ways to download the MTGIpick:</br>
 
 >1) You can download the MTGIpick package with JDK and MCR from our web ( http://bioinfo.zstu.edu.cn/MTGI )</br>
 >>A) Windows (MTGIpick.zip)
 >>>- MCRInstaller.exe　　　　　　 　# MCR 8.4 for Windows
->>>- MTGI_setup.exe　 　 　　　　　# Main program
+>>>- MTGI_setup.exe　　　　　　 　# Main program
 >>>- Example.fasta　 　 　　　　   　  # Two sequences in FASTA format
 >>>- README.txt　　　　  　　　   　  # Documentation
 >>>- help.htm (help.files)　　　　　　 　# Introduction
@@ -59,7 +59,7 @@
 >>>- run_MTGI_linux.sh　　　　　　　# Run MTGIpick software
 >>>- Example.fasta　　　　　　　　    # Two sequences in FASTA format
 >>>- README.txt　　　　　　　　　  # Documentation
->>>- help.htm (help.files)　　　　　   # Introduction
+>>>- help.htm (help.files)　　　　　　 　# Introduction
 >>>- jsonFile (d3)　　　　　　　　    # Visualization files 
 
 >2)If you download the MTGIpick package without JDK 1.8 or MCR 8.4 (8.1) from our web ( http://bioinfo.zstu.edu.cn/MTGI , https://github.com/bioinfo0706/MTGIpick ), download the JDK and MCR for your platform from the following Web:
@@ -83,7 +83,6 @@
 　　Step 2</br>
 　　To run the MTGIpick software, just type a simple command line as follow (Once the first step has run, execute the second step to run MTGIpick):</br>
 　　>bash run_MTGI_linux.sh</br>
-　　</br>
 　　
 ###3. Tutorial
 #####3.1. Functions and features
@@ -91,7 +90,7 @@
 　　2. MSA: A multiscale segmentation algorithm to investigate the variability of genomic signals and to identify large, multi-window segments.</br>
 　　3. CG-MJSD: A boundary detection method based on CG-based segmentation and Markovian Jensen-Shannon divergence.</br>
 　　4. The methods and parameters could be chosen according to your purpose.</br>
-    5. Using Zoomable Sunburst and Sunburst Partition to represent the predicted GIs with conserved scores along the whole genome.</br>
+　　5. Using Zoomable Sunburst and Sunburst Partition to represent the predicted GIs with conserved scores along the whole genome.</br>
 #####3.2. Input
 ######3.2.1 Input file format
 　　MTGIpick accepts DNA sequences, and the input file has to be in fasta, fa, or fna format. For example, the file name is example.fasta or example.fa, its content looks like this:</br>
@@ -114,6 +113,7 @@ ATTTTTACGCATTTCCCCATTAATGCGATGATCCCAGCGCGAAAGCATCTGTGATTAAGA</br>
 　>ctt_ GI2_208020_223020_GI1_93960_99000_GI3_408480_410520</br>
 CCCCATTCCCCCCATTCCCTCCTTTTCCACCATACCCTCTTTTCCCCTCGTTGCCCCCAA</br>
 ATTTTTACGCATTTCCCCATTAATGCGATGATCCCAGCGCGAAAGCATCTGTGATTAAGA</br>
+　>……</br>
 　Please note GenBank (from NCBI) will not work with MTGIpick. If using sequences from NCBI be sure to save them as FASTA format first. Sequence format conversion tools are available at http://www.ebi.ac.uk/Tools/sfc/. </br>
 　The sequences can be uploaded to MTGIpick in a file. It is very important that each of the sequences has a unique name. If they do not, the software will fail. There must be no empty lines, white spaces or control characters between sequences or at the top of the file. This will also cause the software to fail.</br>
 ######3.2.2 Process Input file
@@ -167,9 +167,7 @@ A dialog box appears to tell you to select a way to download the results once yo
   2). Find the results in the same directory where the input file is stored. </br>
   The outputs of the MTGIpick consist of genomic signatures, conserved scores of predicted GIs and predicted GIs. They are stored in the same directory where the input file is stored. Output of the genomic signatures is a Zip file whose name is created by the input file name and signature. If the input file contains at least two sequences, the Zip file contains more signature files for all the sequences. </br>
 　Example the genomic signature file, its content looks like this:</br>
-
 ![1](https://github.com/bioinfo0706/MTGIpick/blob/master/pictures/1.png ) </br>
-
 The first line is sequence name, and all the genomic signatures are sorted according to their kurtosis scores.</br>
 　　Output of the predicted GIs of total scales is a Zip file whose name is created by the input file name and predict GIs. If input file contains at least two sequences, the Zip file contains more predict GIs files for all the sequences.</br>
 　　Here is a brief description of the predicted GIs of the total scales: </br>
@@ -184,7 +182,6 @@ The first line is sequence name, and all the genomic signatures are sorted accor
 　　9. attributes - the numbers of the genomic islands.</br>
   Example the total scale predict GIs looks like this:</br>　
 ![1](https://github.com/bioinfo0706/MTGIpick/blob/master/pictures/2.png ) </br>
-
 　　Output of each scale predict GIs is a Zip file whose name is created by the input file name and predict. If the input file contains at least two sequences, the Zip file contains more predicted GI files for all the sequences.</br>
 　　Here is a brief description of the predicted GIs of each scale:</br>
 　　1. seqname - The name of the sequence. </br>
@@ -198,7 +195,6 @@ The first line is sequence name, and all the genomic signatures are sorted accor
 　　9. attributes - the numbers of the genomic islands.</br>
   The predict GIs of each scale looks like this:</br>
 ![1](https://github.com/bioinfo0706/MTGIpick/blob/master/pictures/3.png ) </br>
-
 ######3.4.2 Interactive visualization tool
 MTGIpick provides a new interactive genome visualization tool, which uses zoomable sunburst and sunburst partition to represent predicted GIs with conserved score along the whole genome. MTGIpick has generated a number of html files in the same directory where the input file is stored, you can open them directly and view the predicted GIs with conserved scores.</br>	 
 ![1](https://github.com/bioinfo0706/MTGIpick/blob/master/pictures/4.png ) </br>
