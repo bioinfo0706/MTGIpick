@@ -1,0 +1,67 @@
+var a={
+"name":"flare",
+ "children":[
+{
+ "name":"1","size":125000,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"2","ss":125001,"ee":137000,"ll":12000,"isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"21","size":12000,"isco":0,"co":"0","start":125001,"end":"137000","possible":1,"L":30},
+ {"name":"22","size":240,"isco":1,"co":"d3.rgb(255,255,255)"}
+]
+ },
+{
+ "name":"3","size":129000,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"4","ss":266001,"ee":306000,"ll":40000,"isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"41","size":3000,"isco":0,"co":"0","start":266001,"end":"269000","possible":6,"L":30},
+ {"name":"42","size":3000,"isco":0,"co":"0","start":269001,"end":"272000","possible":7,"L":30},
+ {"name":"43","size":15000,"isco":0,"co":"0","start":272001,"end":"287000","possible":30,"L":30},
+ {"name":"44","size":1000,"isco":0,"co":"0","start":287001,"end":"288000","possible":9,"L":30},
+ {"name":"45","size":17000,"isco":0,"co":"0","start":288001,"end":"305000","possible":30,"L":30},
+ {"name":"46","size":1000,"isco":0,"co":"0","start":305001,"end":"306000","possible":28,"L":30},
+ {"name":"47","size":800,"isco":1,"co":"d3.rgb(255,255,255)"}
+]
+ },
+{
+ "name":"5","size":22000,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"6","ss":328001,"ee":342000,"ll":14000,"isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"61","size":1000,"isco":0,"co":"0","start":328001,"end":"329000","possible":2,"L":30},
+ {"name":"62","size":11000,"isco":0,"co":"0","start":329001,"end":"340000","possible":3,"L":30},
+ {"name":"63","size":2000,"isco":0,"co":"0","start":340001,"end":"342000","possible":1,"L":30},
+ {"name":"64","size":280,"isco":1,"co":"d3.rgb(255,255,255)"}
+]
+ },
+{
+ "name":"7","size":88000,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"8","ss":430001,"ee":447000,"ll":17000,"isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"81","size":1000,"isco":0,"co":"0","start":430001,"end":"431000","possible":1,"L":30},
+ {"name":"82","size":16000,"isco":0,"co":"0","start":431001,"end":"447000","possible":2,"L":30},
+ {"name":"83","size":340,"isco":1,"co":"d3.rgb(255,255,255)"}
+]
+ },
+{
+ "name":"9","size":99000,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"10","ss":546001,"ee":558000,"ll":12000,"isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"101","size":12000,"isco":0,"co":"0","start":546001,"end":"558000","possible":1,"L":30},
+ {"name":"102","size":240,"isco":1,"co":"d3.rgb(255,255,255)"}
+]
+ },
+{
+ "name":"11","size":199540,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+ {"name":"111","size":15151,"isco":1,"co":"d3.rgb(255,255,255)"}
+]
+};

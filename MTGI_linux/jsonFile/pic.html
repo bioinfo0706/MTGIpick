@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+   <meta charset="utf-8">
+		<title>The picture of multiscale algrithm</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+	 <style>
+
+     circle,
+       path {
+       cursor: pointer;
+         }
+
+         circle {
+           fill: none;
+            pointer-events: all;
+	
+         }
+#div1{
+	position:absolute;
+	width:300px;
+	height:200px;
+	background-color:#9F9;
+	top:-190px;
+	right:0px;
+	text-align:left;
+	padding:10px;
+	overflow:auto;
+	display:none;
+	margin:200px 10px;
+	border:1px solid #000;
+	}
+#div1 span{
+	line-height:3em;
+	}
+.intro {
+  text-align: center;
+  font-size: 32px
+}
+.hha{
+
+  margin: auto;  
+  position: absolute;  
+  top: 0; left: 0; bottom: 0; right: 0;  
+
+}
+#difColor{
+	width:200px;
+	height:20px;
+	background:linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	background:-moz-linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	background:-webkit-linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	background:-o-linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	}
+#colorBarView_span1{
+	color:#2f2f00;
+	font-weight:bold
+	}
+#colorBar{
+	padding:20px 0 0 100px;
+	}
+#colorBar span{
+	color:#2f2f00;
+	}
+#colorBarView{
+	border:1px solid #ddd;
+	padding:20px 5px;
+	width:310px;
+	}
+     </style>
+<script>
+function showDiv(start,end,possible,gene){
+	var div1=document.getElementById('div1');
+	if(div1.style.display=='none'){
+		div1.style.display='block';
+		}
+	var span1=document.getElementById('span1');
+	var span2=document.getElementById('span2');
+	var span3=document.getElementById('span3');
+	var span4=document.getElementById('span4');
+	span1.innerHTML=start;
+	span2.innerHTML=end;
+	span3.innerHTML=possible;
+	span4.innerHTML=gene;
+	}
+function hideDiv(){
+	var div1=document.getElementById('div1');
+	div1.style.display='none';
+	}
+</script>
+	
+	</head>
+
+
+<body>
+<!-- <div onclick="showDiv('start1','end1','0.1','gene1')" style="background-color:#060;width:50px;height:20px;">1</div>
+    <div onclick="showDiv('start2','end2','0.3','gene2')" style="background-color:#C60;width:50px;height:20px;">2</div>
+    <div onclick="showDiv('start3','end3','0.6','gene3')" style="background-color:#F90;width:50px;height:20px;">3</div>
+    <div onclick="showDiv('start4','end4','0.9','aaatcgcttgcgcaaaatctttatttcatttcgagcctgcggcgtgcatgcaaccggctc')" style="background-color:#F03;width:50px;height:20px;">4</div>
+    <div onclick="hideDiv()" style="background-color:#6C3;width:50px;height:20px;">清除</div>-->
+    <div id="colorBarView">
+        <span id="colorBarView_span1">Conserved Score:</span>
+        <div id="colorBar">
+            <div id="difColor">
+            </div>
+            <span style="margin-right:130px;">low</span><span>height</span>
+        </div>
+    </div>
+    <div id='div1'>
+    	start:<span id='span1'></span><br>
+        end:<span id='span2'></span><br>
+        possible:<span id='span3'></span><br>
+		gene:<span id='span4'></span><br>
+    </div>
+
+<script>
+
+var margin = {top: 350, right: 480, bottom: 350, left: 480},
+    radius = Math.min(margin.top, margin.right, margin.bottom, margin.left)-10;
+
+var hue = d3.scale.category10();<!--D3中的颜色集 -->
+
+var luminance = d3.scale.sqrt()
+    .domain([0, 1e6])
+    .clamp(true)
+    .range([90, 20]);
+
+
+var svg = d3.select("body").append("svg")
+    .attr("class","hha")
+    .attr("width", margin.left + margin.right)
+    .attr("height", margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.select("body").append("p")
+	 .attr("class","intro")
+     .text("");
+
+
+	
+var partition = d3.layout.partition()
+    .sort(null)
+    .size([2 * Math.PI, radius]);
+
+var arc = d3.svg.arc()
+    .startAngle(function(d) { return d.x; })
+    .endAngle(function(d) { return d.x + d.dx })
+    .innerRadius(function(d) { return radius / 3 * d.depth; })
+    .outerRadius(function(d) { return radius / 3 * (d.depth + 1) ; });
+	
+
+var arc2 = d3.svg.arc()
+    .startAngle(function(d) { return d.x; })
+    .endAngle(function(d) { return d.x + d.dx - .01 / (d.depth + .5); })
+    .innerRadius(function(d) { return radius / 3 * d.depth; })
+    .outerRadius(function(d) { return radius / 5 * (d.depth + 1) - 1; });
+var a={
+"name":"flare",
+ "children":[
+{
+ "name":"1","size":141579,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"2","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"21","size":17962,"isco":0,"co":"0","start":141580,"end":"159541","possible":0.022222}
+]
+ },
+{
+ "name":"3","size":19009,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"4","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"41","size":17798,"isco":0,"co":"0","start":178551,"end":"196348","possible":0.044444}
+]
+ },
+{
+ "name":"5","size":112867,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"6","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"61","size":11351,"isco":0,"co":"0","start":309216,"end":"320566","possible":0.2},
+ {"name":"62","size":4659,"isco":0,"co":"0","start":320567,"end":"325225","possible":0.73333},
+ {"name":"63","size":13612,"isco":0,"co":"0","start":325226,"end":"338837","possible":0.77778},
+ {"name":"64","size":1,"isco":0,"co":"0","start":338838,"end":"338838","possible":0.33333},
+ {"name":"65","size":22012,"isco":0,"co":"0","start":338839,"end":"360850","possible":0.77778}
+]
+ },
+{
+ "name":"7","size":17190,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"8","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"81","size":14112,"isco":0,"co":"0","start":378041,"end":"392152","possible":0.066667}
+]
+ },
+{
+ "name":"9","size":209992,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"10","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"101","size":8413,"isco":0,"co":"0","start":602145,"end":"610557","possible":0.044444}
+]
+ },
+{
+ "name":"11","size":131819,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"12","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"121","size":16562,"isco":0,"co":"0","start":742377,"end":"758938","possible":0.022222},
+ {"name":"122","size":28236,"isco":0,"co":"0","start":758939,"end":"787174","possible":0.11111}
+]
+ },
+{
+ "name":"13","size":165131,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"14","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"141","size":10480,"isco":0,"co":"0","start":952306,"end":"962785","possible":0.022222}
+]
+ },
+{
+ "name":"15","size":52975,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"16","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"161","size":12674,"isco":0,"co":"0","start":1015761,"end":"1028434","possible":0.022222},
+ {"name":"162","size":13,"isco":0,"co":"0","start":1028435,"end":"1028447","possible":0.066667},
+ {"name":"163","size":15432,"isco":0,"co":"0","start":1028448,"end":"1043879","possible":0.2},
+ {"name":"164","size":9420,"isco":0,"co":"0","start":1043880,"end":"1053299","possible":0.64444}
+]
+ },
+{
+ "name":"17","size":31272,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"18","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"181","size":7346,"isco":0,"co":"0","start":1084572,"end":"1091917","possible":0.044444}
+]
+ },
+{
+ "name":"19","size":29713,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"20","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"201","size":13440,"isco":0,"co":"0","start":1121631,"end":"1135070","possible":0.13333},
+ {"name":"202","size":3211,"isco":0,"co":"0","start":1135071,"end":"1138281","possible":0.044444}
+]
+ },
+{
+ "name":"21","size":205091,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"22","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"221","size":8087,"isco":0,"co":"0","start":1343373,"end":"1351459","possible":0.022222}
+]
+ },
+{
+ "name":"23","size":32950,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"24","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"241","size":6974,"isco":0,"co":"0","start":1384410,"end":"1391383","possible":0.044444}
+]
+ },
+{
+ "name":"25","size":75697,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"26","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"261","size":13250,"isco":0,"co":"0","start":1467081,"end":"1480330","possible":0.66667},
+ {"name":"262","size":2,"isco":0,"co":"0","start":1480331,"end":"1480332","possible":0.6}
+]
+ },
+{
+ "name":"27","size":58629,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"28","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"281","size":53,"isco":0,"co":"0","start":1538962,"end":"1539014","possible":0.022222},
+ {"name":"282","size":6,"isco":0,"co":"0","start":1539015,"end":"1539020","possible":0.15556},
+ {"name":"283","size":8415,"isco":0,"co":"0","start":1539021,"end":"1547435","possible":0.17778},
+ {"name":"284","size":21932,"isco":0,"co":"0","start":1547436,"end":"1569367","possible":0.68889},
+ {"name":"285","size":9,"isco":0,"co":"0","start":1569368,"end":"1569376","possible":0.64444},
+ {"name":"286","size":68,"isco":0,"co":"0","start":1569377,"end":"1569444","possible":0.62222}
+]
+ },
+{
+ "name":"29","size":55361,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"30","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"301","size":26019,"isco":0,"co":"0","start":1624806,"end":"1650824","possible":0.71111}
+]
+ },
+{
+ "name":"31","size":42460,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"32","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"321","size":3733,"isco":0,"co":"0","start":1693285,"end":"1697017","possible":0.022222},
+ {"name":"322","size":9684,"isco":0,"co":"0","start":1697018,"end":"1706701","possible":0.044444}
+]
+ },
+{
+ "name":"33","size":52691,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"34","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"341","size":18198,"isco":0,"co":"0","start":1759393,"end":"1777590","possible":0.022222},
+ {"name":"342","size":14304,"isco":0,"co":"0","start":1777591,"end":"1791894","possible":0.68889}
+]
+ },
+{
+ "name":"35","size":80826,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"36","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"361","size":24254,"isco":0,"co":"0","start":1872721,"end":"1896974","possible":0.73333},
+ {"name":"362","size":34,"isco":0,"co":"0","start":1896975,"end":"1897008","possible":0.2},
+ {"name":"363","size":14181,"isco":0,"co":"0","start":1897009,"end":"1911189","possible":0.17778},
+ {"name":"364","size":1954,"isco":0,"co":"0","start":1911190,"end":"1913143","possible":0.22222},
+ {"name":"365","size":21037,"isco":0,"co":"0","start":1913144,"end":"1934180","possible":0.73333}
+]
+ },
+{
+ "name":"37","size":109343,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"38","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"381","size":7446,"isco":0,"co":"0","start":2043524,"end":"2050969","possible":0.066667},
+ {"name":"382","size":19580,"isco":0,"co":"0","start":2050970,"end":"2070549","possible":0.088889},
+ {"name":"383","size":43689,"isco":0,"co":"0","start":2070550,"end":"2114238","possible":0.066667},
+ {"name":"384","size":3128,"isco":0,"co":"0","start":2114239,"end":"2117366","possible":0.66667},
+ {"name":"385","size":17477,"isco":0,"co":"0","start":2117367,"end":"2134843","possible":0.84444},
+ {"name":"386","size":2272,"isco":0,"co":"0","start":2134844,"end":"2137115","possible":0.73333},
+ {"name":"387","size":14643,"isco":0,"co":"0","start":2137116,"end":"2151758","possible":0.17778},
+ {"name":"388","size":1,"isco":0,"co":"0","start":2151759,"end":"2151759","possible":0.2},
+ {"name":"389","size":44314,"isco":0,"co":"0","start":2151760,"end":"2196073","possible":0.15556}
+]
+ },
+{
+ "name":"39","size":181259,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"40","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"401","size":17030,"isco":0,"co":"0","start":2377333,"end":"2394362","possible":0.022222}
+]
+ },
+{
+ "name":"41","size":128625,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"42","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"421","size":15863,"isco":0,"co":"0","start":2522988,"end":"2538850","possible":0.044444}
+]
+ },
+{
+ "name":"43","size":48814,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"44","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"441","size":3133,"isco":0,"co":"0","start":2587665,"end":"2590797","possible":0.066667},
+ {"name":"442","size":23797,"isco":0,"co":"0","start":2590798,"end":"2614594","possible":0.68889},
+ {"name":"443","size":23360,"isco":0,"co":"0","start":2614595,"end":"2637954","possible":0.022222}
+]
+ },
+{
+ "name":"45","size":105643,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"46","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"461","size":15701,"isco":0,"co":"0","start":2743598,"end":"2759298","possible":0.044444}
+]
+ },
+{
+ "name":"47","size":75429,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"48","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"481","size":8705,"isco":0,"co":"0","start":2834728,"end":"2843432","possible":0.088889},
+ {"name":"482","size":8876,"isco":0,"co":"0","start":2843433,"end":"2852308","possible":0.13333},
+ {"name":"483","size":10139,"isco":0,"co":"0","start":2852309,"end":"2862447","possible":0.088889},
+ {"name":"484","size":38463,"isco":0,"co":"0","start":2862448,"end":"2900910","possible":0.77778}
+]
+ },
+{
+ "name":"49","size":140417,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"50","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"501","size":18784,"isco":0,"co":"0","start":3041328,"end":"3060111","possible":0.15556}
+]
+ },
+{
+ "name":"51","size":73582,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"52","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"521","size":8,"isco":0,"co":"0","start":3133694,"end":"3133701","possible":0.13333},
+ {"name":"522","size":13528,"isco":0,"co":"0","start":3133702,"end":"3147229","possible":0.17778},
+ {"name":"523","size":4965,"isco":0,"co":"0","start":3147230,"end":"3152194","possible":0.088889}
+]
+ },
+{
+ "name":"53","size":152585,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"54","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"541","size":9148,"isco":0,"co":"0","start":3304780,"end":"3313927","possible":0.044444}
+]
+ },
+{
+ "name":"55","size":204219,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"56","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"561","size":8989,"isco":0,"co":"0","start":3518147,"end":"3527135","possible":0.24444},
+ {"name":"562","size":21393,"isco":0,"co":"0","start":3527136,"end":"3548528","possible":0.75556},
+ {"name":"563","size":9279,"isco":0,"co":"0","start":3548529,"end":"3557807","possible":0.2},
+ {"name":"564","size":19232,"isco":0,"co":"0","start":3557808,"end":"3577039","possible":0.066667},
+ {"name":"565","size":13625,"isco":0,"co":"0","start":3577040,"end":"3590664","possible":0.17778},
+ {"name":"566","size":9442,"isco":0,"co":"0","start":3590665,"end":"3600106","possible":0.15556}
+]
+ },
+{
+ "name":"57","size":328786,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"58","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"581","size":12157,"isco":0,"co":"0","start":3928893,"end":"3941049","possible":0.066667}
+]
+ },
+{
+ "name":"59","size":285743,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"60","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"601","size":20002,"isco":0,"co":"0","start":4226793,"end":"4246794","possible":0.68889}
+]
+ },
+{
+ "name":"61","size":75152,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"62","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"621","size":26986,"isco":0,"co":"0","start":4321947,"end":"4348932","possible":0.68889}
+]
+ },
+{
+ "name":"63","size":53936,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"64","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"641","size":4254,"isco":0,"co":"0","start":4402869,"end":"4407122","possible":0.28889},
+ {"name":"642","size":64883,"isco":0,"co":"0","start":4407123,"end":"4472005","possible":0.8},
+ {"name":"643","size":11914,"isco":0,"co":"0","start":4472006,"end":"4483919","possible":0.26667},
+ {"name":"644","size":28307,"isco":0,"co":"0","start":4483920,"end":"4512226","possible":0.28889},
+ {"name":"645","size":6734,"isco":0,"co":"0","start":4512227,"end":"4518960","possible":0.75556},
+ {"name":"646","size":11974,"isco":0,"co":"0","start":4518961,"end":"4530934","possible":0.8},
+ {"name":"647","size":5733,"isco":0,"co":"0","start":4530935,"end":"4536667","possible":0.75556},
+ {"name":"648","size":6,"isco":0,"co":"0","start":4536668,"end":"4536673","possible":0.2}
+]
+ },
+{
+ "name":"65","size":37125,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"66","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"661","size":16803,"isco":0,"co":"0","start":4573799,"end":"4590601","possible":0.022222}
+]
+ },
+{
+ "name":"67","size":94157,"isco":1,"co":"d3.rgb(209,209,209)"
+},
+{
+ "name":"68","isco":1,"co":"d3.rgb(228,95,71)",
+  "children":[
+ {"name":"681","size":18131,"isco":0,"co":"0","start":4684759,"end":"4702889","possible":0.17778},
+ {"name":"682","size":16259,"isco":0,"co":"0","start":4702890,"end":"4719148","possible":0.13333}
+]
+ },
+{
+ "name":"69","size":89889,"isco":1,"co":"d3.rgb(209,209,209)"
+}
+]
+};
+ partition
+      .value(function(d) { return d.size; })
+      .nodes(a)
+      .forEach(function(d) {
+        d._children = d.children;
+        d.sum = d.value;
+        d.key = key(d);
+        d.fill = fill(d);
+		
+      })
+;
+
+
+
+  // Now redefine the value function to use the previously-computed sum.
+  partition
+      .children(function(d, depth) { return depth < 2 ? d._children : null; })
+      .value(function(d) { return d.sum; });
+
+  var center = svg.append("circle")
+      .attr("r", radius / 3)
+      .on("click", zoomOut);
+
+
+	  
+	  
+  center.append("title")
+        .style("font-size", "12px")
+		.style("font-family", "simsun")
+		.attr("text-anchor","middle")
+        .text("Genome");
+
+ 
+	  
+	  
+  var path = svg.selectAll("path")
+      .data(partition.nodes(a).slice(1))
+      .enter().append("path")
+      .attr("d", arc)
+	  .style("stroke",null)
+      .style("fill", function(d) { return d.fill; })
+      .each(function(d) { this._current = updateArc(d); })
+      .on("click", zoomIn);
+	  
+  
+
+
+
+	  
+		  
+	  
+  function zoomIn(p) {
+    if (p.depth > 1) p = p.parent;
+    if (!p.children) 
+	{	
+	if(p.isco==0) showDiv(p.start,p.end,p.possible,p.seq);
+	return;
+	}
+    zoom(p, p);
+  }
+
+  function zoomOut(p) {
+    hideDiv();
+    if (!p.parent) return;
+    zoom(p.parent, p);
+  }
+
+  // Zoom to the specified new root.
+  function zoom(root, p) {
+    if (document.documentElement.__transition__) return;
+
+    // Rescale outside angles to match the new layout.
+    var enterArc,
+        exitArc,
+        outsideAngle = d3.scale.linear().domain([0, 2 * Math.PI]);
+
+    function insideArc(d) {
+      return p.key > d.key
+          ? {depth: d.depth - 1, x: 0, dx: 0} : p.key < d.key
+          ? {depth: d.depth - 1, x: 2 * Math.PI, dx: 0}
+          : {depth: 0, x: 0, dx: 2 * Math.PI};
+    }
+
+    function outsideArc(d) {
+      return {depth: d.depth + 1, x: outsideAngle(d.x), dx: outsideAngle(d.x + d.dx) - outsideAngle(d.x)};
+    }
+
+    center.datum(root);
+
+    // When zooming in, arcs enter from the outside and exit to the inside.
+    // Entering outside arcs start from the old layout.
+    if (root === p) enterArc = outsideArc, exitArc = insideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+    path = path.data(partition.nodes(root).slice(1), function(d) { return d.key; });
+
+    // When zooming out, arcs enter from the inside and exit to the outside.
+    // Exiting outside arcs transition to the new layout.
+    if (root !== p) enterArc = insideArc, exitArc = outsideArc, outsideAngle.range([p.x, p.x + p.dx]);
+
+    d3.transition().duration(d3.event.altKey ? 7500 : 750).each(function() {
+      path.exit().transition()
+          .style("fill-opacity", function(d) { return d.depth === 1 + (root === p) ? 1 : 0; })
+          .attrTween("d", function(d) { return arcTween.call(this, exitArc(d)); })
+          .remove();
+
+      path.enter().append("path")
+          .style("fill-opacity", function(d) { return d.depth === 2 - (root === p) ? 1 : 0; })
+          .style("fill", function(d) { return d.fill; })
+          .on("click", zoomIn)
+          .each(function(d) { this._current = enterArc(d); });
+
+      path.transition()
+          .style("fill-opacity", 1)
+          .attrTween("d", function(d) { return arcTween.call(this, updateArc(d)); });
+    });
+	
+	
+	
+  }
+  
+  
+
+
+
+  
+
+
+
+
+
+	
+
+
+	
+
+
+
+
+	
+	
+
+function key(d) {
+  var k = [], p = d;
+  while (p.depth) k.push(p.name), p = p.parent;
+  return k.reverse().join(".");
+}
+
+function key(d2) {
+  var k = [], p = d2;
+  while (p.depth) k.push(p.name), p = p.parent;
+  return k.reverse().join(".");
+}
+
+
+function fill(d) {
+  var p = d;
+
+  var c = d3.rgb(p.co);
+  c.l = luminance(d.sum);
+  return c;
+}
+
+function fill(d2) {
+  var p = d2;
+var compute=d3.interpolate(d3.rgb(255,200,200),d3.rgb(190,0,0));
+if(p.isco==0){
+  var c = d3.rgb(compute(p.possible));
+}else{
+  var c = d3.rgb(p.co);
+}
+  c.l = luminance(d2.sum);
+  return c;
+}
+
+
+
+function arcTween(b) {
+  var i = d3.interpolate(this._current, b);
+  this._current = i(0);
+  return function(t) {
+    return arc(i(t));
+  };
+}
+
+
+function updateArc(d) {
+  return {depth: d.depth, x: d.x, dx: d.dx};
+}
+
+function updateArc(d2) {
+  return {depth: d2.depth, x: d2.x, dx: d2.dx};
+}
+d3.selectAll(self.frameElement).style("height", margin.top + margin.bottom + "px");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

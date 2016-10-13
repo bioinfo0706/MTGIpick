@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta charset="utf-8">
+		<title>The picture of multiscale algrithm</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+	 <style>
+
+     circle,
+       path {
+       cursor: pointer;
+         }
+
+         circle {
+           fill: none;
+            pointer-events: all;
+	
+         }
+#div1{
+	position:absolute;
+	width:300px;
+	height:250px;
+	background-color:#D3E6F4;
+	top:-190px;
+	right:0px;
+	text-align:left;
+	padding:10px;
+	overflow:auto;
+	display:none;
+	margin:200px 10px;
+	border:1px solid #000;
+	}
+#div11{
+	position:absolute;
+	width:300px;
+	height:250px;
+	background-color:#9F9;
+	top:-190px;
+	right:0px;
+	text-align:left;
+	padding:10px;
+	overflow:auto;
+	display:none;
+	margin:200px 10px;
+	border:1px solid #000;
+	}
+#div1 span{
+	line-height:3em;
+	}
+#div11 span{
+	line-height:3em;
+	}
+.intro {
+  text-align: center;
+  font-size: 32px
+}
+.hha{
+
+  margin: auto;  
+  position: absolute;  
+  top: 0; left: 0; bottom: 0; right: 0;  
+
+}
+#difColor{
+	width:200px;
+	height:20px;
+	background:url(d3/colorbar.jpg);
+	/*background:linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	background:-moz-linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	background:-webkit-linear-gradient(right,#be0000 0%,#ffc8c8 100%);
+	background:-o-linear-gradient(right,#be0000 0%,#ffc8c8 100%);*/
+	}
+#colorBarView_span1{
+	color:#2f2f00;
+	font-weight:bold
+	}
+#colorBar{
+	padding:20px 0 0 100px;
+	}
+#colorBar span{
+	color:#2f2f00;
+	}
+#colorBarView{
+	border:1px solid #ddd;
+	padding:20px 5px;
+	width:310px;
+	}
+#div1 h4{
+	width:100%;
+	text-align:center;
+}
+#div11 h4{
+	width:100%;
+	text-align:center;
+}
+
+     </style>
+<script>
+function showDiv(start,end,possible,length){
+	var div1=document.getElementById('div1');
+	if(div1.style.display=='none'){
+		div1.style.display='block';
+		}
+	var span1=document.getElementById('span1');
+	var span2=document.getElementById('span2');
+	var span3=document.getElementById('span3');
+	var span4=document.getElementById('span4');
+	span1.innerHTML=start;
+	span2.innerHTML=end;
+	span3.innerHTML=possible;
+	span4.innerHTML=length;
+	}
+	
+function showDiv2(start2,end2,length2){
+	var div11=document.getElementById('div11');
+	if(div11.style.display=='none'){
+		div11.style.display='block';
+		}
+	var span1=document.getElementById('span11');
+	var span2=document.getElementById('span22');
+	
+	var span4=document.getElementById('span44');
+	span1.innerHTML=start2;
+	span2.innerHTML=end2;
+	
+	span4.innerHTML=length2;
+	}
+function hideDiv(){
+	var div1=document.getElementById('div1');
+	div1.style.display='none';
+	}
+function hideDiv2(){
+	var div11=document.getElementById('div11');
+	div11.style.display='none';
+	}
+</script>
+	
+	</head>
+
+
+<body>
+
+    <div id="colorBarView">
+        <span id="colorBarView_span1">Conserved Score:</span>
+        <div id="colorBar">
+            <div id="difColor">
+            </div>
+            <span style="margin-right:140px;">low</span><span>high</span>
+        </div>
+    </div>
+    <div id='div1'>
+		<h4> Prediction of Genomic Islands</h4>
+    	Conserved Score:<span id='span3'></span><br>
+		Start:<span id='span1'></span><br>
+        End:<span id='span2'></span><br>
+        Length:<span id='span4'></span><br>
+    </div>
+    <div id='div11'>
+		<h4> Information of Genome</h4>
+		Start:<span id='span11'></span><br>
+        End:<span id='span22'></span><br>
+        Length:<span id='span44'></span><br>
+    </div>
+
+
+    
+<script>
+
+var margin = {top: 300, right: 430, bottom: 300, left: 430},
+    radius = Math.min(margin.top, margin.right, margin.bottom, margin.left)-10;
+
+var hue = d3.scale.category10();<!--D3中的颜色集 -->
+
+var luminance = d3.scale.sqrt()
+    .domain([0, 1e6])
+    .clamp(true)
+    .range([90, 20]);
+
+
+var svg = d3.select("body").append("svg")
+    .attr("class","hha")
+    .attr("width", margin.left + margin.right)
+    .attr("height", margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.select("body").append("p")
+	 .attr("class","intro")
+     .text("");
+
+
+	
+var partition = d3.layout.partition()
+    .sort(null)
+    .size([2 * Math.PI, radius]);
+
+var arc = d3.svg.arc()
+    .startAngle(function(d) { return d.x; })
+    .endAngle(function(d) { return d.x + d.dx })
+    .innerRadius(function(d) { return radius / 3 * d.depth; })
+    .outerRadius(function(d) { return radius / 3 * (d.depth + 1) ; });
+	
+
+var arc2 = d3.svg.arc()
+    .startAngle(function(d) { return d.x; })
+    .endAngle(function(d) { return d.x + d.dx - .01 / (d.depth + .5); })
+    .innerRadius(function(d) { return radius / 3 * d.depth; })
+    .outerRadius(function(d) { return radius / 5 * (d.depth + 1) - 1; });
