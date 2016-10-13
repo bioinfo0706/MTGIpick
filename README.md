@@ -37,7 +37,7 @@
 #####2.1. Requirements
 　　MTGIpick has been compiled and tested under Sun Java interpreter and Matlab. MTGIpick can be used in Windows- and Linux- platforms. Java Virtual Machine and MATLAB Compiler Runtime (MCR) are required for MTGIpick setup on your platform. However, we strongly advise the use of openjdk (JDK) instead of the Oracle version of java virtual machine when working in linux-based machines as the Oracle version may result in some exceptions during the analyses.</br>
   _ _ _ _ Software _ _ _ _ _ _ _   On window(x64)_ _ _ _ _ _ On Linux(x86_64)_ _ _ _ _ _ </br>
-  Java Virtual Machine_ _ _ _ _ _ _ _ JDK 1.8_ _ _ _ _ _ _ _ _JDK 1.8_ _ _ _ _ _ _ _ _ _ </br>
+  Java Virtual Machine_ _ _ _ _ _ _ _ JDK 1.8_ _ _ _ _ _ _ _ _ JDK 1.8_ _ _ _ _ _ _ _ _ _ </br>
   MATLAB Compiler Runtime_ _ _ _  MCR 8.4_ _ _ _ _ _ _ _ _ MCR 8.1_ _ _ _ _ _ _ _ _ _  </br>
   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </br> 
 #####2.2. Download
@@ -176,7 +176,8 @@ The first line is sequence name, and all the genomic signatures are sorted accor
 　　3. type - The name of this type of feature, genomic island. </br>
 　　4. start - The starting position of the predicted genomic island in the sequence. </br>
 　　5. end - The ending position of the predicted genomic island in the sequence. </br>
-　　6. score - The conserved scores of each nucleotide according to the total number of appearances in the predicted genomic island along total scales in MTGIpick.</br>　
+　　6. score - The conserved scores of each nucleotide according to the total number of appearances in the predicted</br>
+genomic island along total scales in MTGIpick.</br>　
 　　7. strand - The strand of the feature, + for positive strand.</br>
 　　8. phase - There’s no annotation information and be replaced with “.” charcater. </br>
 　　9. attributes - the numbers of the genomic islands.</br>
