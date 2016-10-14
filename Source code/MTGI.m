@@ -258,7 +258,7 @@ addpath(genpath([pwd '/MTGI/']));
    
         %% print out results that consists of genomic signatures,conserved score of each predicted GIs 
         %% predicted GIs and visualization files.
-        Printresult(Seq,infile,feature_size,ks_position_whole,ks_ascending_whole,signa_str,L,label_temp,xunhuan);
+        Printresult(Seq,file_name,feature_size,ks_position_whole,ks_ascending_whole,signa_str,L,label_temp,xunhuan);
       end   
   elseif strcmp(Pro_v,'Assemble-predict')==1 
       % The sequences from the input file are assembled into a sequence according to the
